@@ -1,5 +1,6 @@
 import './App.css'
-import Sunbrust from './Sunbrust'
+import ZoomSunbrust from './ZoomSunbrust'
+import { Sunbrust } from './Sunbrust'
 
 function App() {
   return (

@@ -51,6 +51,7 @@ async function getSP500() {
         return rowList
       }
     )
+    // console.log(recordList.length) // to confirm length is 505
 
     fs.writeFile(
       'src/companiesInfo.json',
