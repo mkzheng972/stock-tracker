@@ -1,4 +1,7 @@
-#sunBrust {
-  height: 900px;
-  width: 900px;
+.chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 800px;
+  width: 800px;
 }

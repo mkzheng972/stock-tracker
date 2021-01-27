@@ -1,16 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-// import stockData from './dataUtils/modifedData.json'
-import flare from './dataUtils/mockDatad3'
+import stockData from './dataUtils/modifedData.json'
 
-export const Sunbrust = () => {
-  const [data, setData] = useState(flare)
+const Sunbrust = () => {
+  const [data, setData] = useState(stockData)
   const svgRef = useRef()
   const width = 975
   const radius = width / 2
 
-  // console.log(Array.isArray(data.children[0].children))
-  console.log(data)
+  /*
+
+  notes:
+  - removes autobox function as it did not serve its purpose well
+  - added few lines of code to correctly center the sunbrust in the middle
+
+  below:
+  .append('g')
+      .attr('transform', `translate(${width / 2},${width / 2})`)
+  - code depends on the correct data layout passed into partiton
+
+  */
 
   const drawSunbrust = () => {
     const arc = d3
@@ -22,13 +31,6 @@ export const Sunbrust = () => {
       .innerRadius((d) => d.y0)
       .outerRadius((d) => d.y1 - 1)
 
-    function autoBox() {
-      document.body.appendChild(this)
-      const { x, y, width, height } = this.getBBox()
-      document.body.removeChild(this)
-      return [x, y, width, height]
-    }
-
     const color = d3.scaleOrdinal(
       d3.quantize(d3.interpolateRainbow, data.children.length + 1)
     )
@@ -38,7 +40,7 @@ export const Sunbrust = () => {
     const partition = (data) => {
       const root = d3
         .hierarchy(data)
-        .sum((d) => d.value)
+        .sum((d) => d.c)
         .sort((a, b) => b.value - a.value)
       return d3.partition().size([2 * Math.PI, radius])(root)
     }
@@ -50,9 +52,9 @@ export const Sunbrust = () => {
     const svg = d3.select(svgRef.current)
     svg.attr('viewBox', [0, 0, width, width]).style('font', '10px sans-serif')
 
-    console.log(svg)
-
     svg
+      .append('g')
+      .attr('transform', `translate(${width / 2},${width / 2})`)
       .append('g')
       .attr('fill-opacity', 0.6)
       .selectAll('path')
@@ -74,6 +76,8 @@ export const Sunbrust = () => {
       )
     svg
       .append('g')
+      .attr('transform', `translate(${width / 2},${width / 2})`)
+      .append('g')
       .attr('pointer-events', 'none')
       .attr('text-anchor', 'middle')
       .attr('font-size', 10)
@@ -94,18 +98,17 @@ export const Sunbrust = () => {
       })
       .attr('dy', '0.35em')
       .text((d) => d.data.name)
-
-    return svg.attr('viewBox', autoBox).node()
   }
 
   useEffect(() => {
-    // setData(stockData)
+    setData(stockData)
     drawSunbrust()
-    console.log(data)
   }, [])
   return (
-    <div id='sunBrust'>
+    <div id='sunbrust' className='chart'>
       <svg ref={svgRef}></svg>
     </div>
   )
 }
+
+export default Sunbrust

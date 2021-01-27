@@ -1,28 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react'
 import * as d3 from 'd3'
-import flare from './dataUtils/mockDatad3'
 import stockData from './dataUtils/modifedData.json'
 
 const ZoomSunbrust = () => {
-  const data = stockData
+  const [data, setData] = useState(stockData)
   const svgRef = useRef()
 
-  /*
-  reference: https://www.youtube.com/watch?v=Y-ThTzB-Zjk
+  const width = 1000
+  const radius = width / 6
 
-  svg has 3 selections: enter, update, exit
-  .join() api auto handles eneter, update, exit.remove() if not specified as callback params
-  useEffect(() => {
-    const svg = d3.select(svgRef.current)
-    svg
-      .selectAll('circle')
-      .data(data)
-      .join('circle')
-      .attr('r', (value) => value)
-      .attr('cx', (value) => value * 2)
-      .attr('cy', (value) => value * 2)
-      .attr('stroke', 'red')
-  }, [])
+  /*
+
+  zoomable works
+  - main reason for functionality is the proper data structure layout of the data passed into partition
+  - to select what value to scale the sunbrust, change the "d.value" returned from .sum()
+  - the rest of the code itself is working properly, most important change occurs in partition
+
   */
 
   const drawChart = () => {
@@ -39,9 +32,6 @@ const ZoomSunbrust = () => {
     )
 
     const format = d3.format(',d')
-
-    const width = 1000
-    const radius = width / 6
 
     const arc = d3
       .arc()
@@ -176,11 +166,12 @@ const ZoomSunbrust = () => {
   }
 
   useEffect(() => {
+    setData(stockData)
     drawChart()
   }, [])
 
   return (
-    <div id='chart'>
+    <div id='zoomable-sunbrust' className='chart'>
       <svg ref={svgRef}></svg>
     </div>
   )

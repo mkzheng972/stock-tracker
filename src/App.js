@@ -1,11 +1,11 @@
 import './App.css'
 import ZoomSunbrust from './ZoomSunbrust'
-import { Sunbrust } from './Sunbrust'
+import Sunbrust from './Sunbrust'
 
 function App() {
   return (
     <div className='App'>
-      <Sunbrust />
+      {/* <Sunbrust /> */}
       <ZoomSunbrust />
     </div>
   )
