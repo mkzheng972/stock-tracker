@@ -62,11 +62,22 @@ for (let stock of rawApiData) {
 // console.log(sectors)
 
 for (let sector in sectors) {
-  obj.children.push({
+  let sectorObj = {
     name: sector,
-    children: sectors[sector],
-  })
+    children: [], //sectors[sector],
+  }
+  for (let subSector in sectors[sector]) {
+    let subSectorObj = {
+      name: subSector,
+      children: sectors[sector][subSector],
+    }
+    sectorObj.children.push(subSectorObj)
+  }
+  obj.children.push(sectorObj)
 }
+
+// console.log(obj)
+// console.log(Array.isArray(obj.children[0].children))
 
 fs.writeFile('src/modifedData.json', JSON.stringify(obj), (err) => {
   if (err) {

@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import stockData from './dataUtils/modifedData.json'
+// import stockData from './dataUtils/modifedData.json'
+import flare from './dataUtils/mockDatad3'
 
 export const Sunbrust = () => {
-  const [data, setData] = useState(stockData)
+  const [data, setData] = useState(flare)
   const svgRef = useRef()
   const width = 975
   const radius = width / 2
 
-  console.log(Array.isArray(data.children))
+  // console.log(Array.isArray(data.children[0].children))
+  console.log(data)
 
   const drawSunbrust = () => {
     const arc = d3
@@ -33,16 +35,22 @@ export const Sunbrust = () => {
 
     const format = d3.format(',d')
 
-    const partition = (data) =>
-      d3.partition().size([2 * Math.PI, radius])(
-        d3
-          .hierarchy(data)
-          .sum((d) => d.c)
-          .sort((a, b) => b.value - a.value)
-      )
+    const partition = (data) => {
+      const root = d3
+        .hierarchy(data)
+        .sum((d) => d.value)
+        .sort((a, b) => b.value - a.value)
+      return d3.partition().size([2 * Math.PI, radius])(root)
+    }
+
+    // chart
+
     const root = partition(data)
 
     const svg = d3.select(svgRef.current)
+    svg.attr('viewBox', [0, 0, width, width]).style('font', '10px sans-serif')
+
+    console.log(svg)
 
     svg
       .append('g')
@@ -91,9 +99,9 @@ export const Sunbrust = () => {
   }
 
   useEffect(() => {
-    setData(stockData)
-    console.log(data)
+    // setData(stockData)
     drawSunbrust()
+    console.log(data)
   }, [])
   return (
     <div id='sunBrust'>

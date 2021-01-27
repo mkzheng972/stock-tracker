@@ -4,12 +4,8 @@ import flare from './dataUtils/mockDatad3'
 import stockData from './dataUtils/modifedData.json'
 
 const ZoomSunbrust = () => {
-  const [data, setData] = useState(stockData)
+  const data = stockData
   const svgRef = useRef()
-
-  const width = 1000
-  // const height = 700
-  // const radius = Math.min(width, height) / 2
 
   /*
   reference: https://www.youtube.com/watch?v=Y-ThTzB-Zjk
@@ -29,16 +25,12 @@ const ZoomSunbrust = () => {
   }, [])
   */
 
-  console.log(data)
   const drawChart = () => {
     const partition = (data) => {
-      console.log(data)
       const root = d3
         .hierarchy(data)
-        .sum((d) => d.price_change_24hr)
+        .sum((d) => d.current)
         .sort((a, b) => b.value - a.value)
-
-      console.log('ROOT', root)
       return d3.partition().size([2 * Math.PI, root.height + 1])(root)
     }
 
@@ -48,6 +40,7 @@ const ZoomSunbrust = () => {
 
     const format = d3.format(',d')
 
+    const width = 1000
     const radius = width / 6
 
     const arc = d3
