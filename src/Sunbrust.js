@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import * as d3 from 'd3'
 import flare from './dataUtils/mockDatad3'
-import { stock as stockData } from './dataUtils/modifedData.js'
+import stockData from './dataUtils/modifedData.json'
 
 const Sunbrust = () => {
   const [data, setData] = useState(stockData)

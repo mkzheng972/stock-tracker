@@ -1,5 +1,4 @@
-const stock = require('./companies')
-const companies = stock
+const companies = require('./companyInfo.json')
 const axios = require('axios')
 const fs = require('fs')
 
@@ -10,9 +9,10 @@ let arr = []
 
 async function getData() {
   try {
+    let count = 1
     for (let i = 0; i < companies.length; i++) {
       let company = companies[i]
-      let id = company.Symbol
+      let id = company.symbol
 
       async function getPrice(id) {
         try {
@@ -20,9 +20,10 @@ async function getData() {
             `https://finnhub.io/api/v1/quote?symbol=${id}&token=c03h9if48v6sogn2jb3g`
           )
           let data = response.data
-          data.name = company.Name
-          data.sector = company.Sector
-          data.symbol = company.Symbol
+          data.name = company.name
+          data.sector = company.sector
+          data.subSector = company.subSector
+          data.symbol = company.symbol
           data.number = 240
           data.current = data.c
           data.open = data.o
@@ -36,7 +37,6 @@ async function getData() {
       }
 
       await getPrice(id)
-      let count = 1
       if (i !== 0 && i % 59 === 0) {
         console.log(i, count)
         count += 1
@@ -47,7 +47,7 @@ async function getData() {
     console.error(error)
   }
 
-  fs.writeFile('prices1.json', JSON.stringify(arr), 'utf8', (err) => {
+  fs.writeFile('prices.json', JSON.stringify(arr), 'utf8', (err) => {
     if (err) throw err
     console.log('File created!')
   })
