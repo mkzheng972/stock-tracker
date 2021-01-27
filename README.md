@@ -68,3 +68,15 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+steps:
+1. get list of s&p 500 companies and its sectors + subsectors
+2. get stock information on the companies via company symbol
+3. output is an array
+4. need to map thru array and output new array that has info of both company name,sector + current day prices
+5. lastly set data to zoomable sunbrust for view
+
+** in order to get s&p company info for free..
+options: search for free api that offers or use a web scraper
